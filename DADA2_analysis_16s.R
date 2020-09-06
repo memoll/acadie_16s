@@ -116,7 +116,3 @@ table(nchar(getSequences(seqtab)))
 saveRDS(seqtab, file = "../mp/aca_16s/files/seqtab_A.rds")
 # Run 2: saveRDS(seqtab, file = "../mp/aca_16s/files/seqtab_B.rds")
 # Run 3: saveRDS(seqtab, file = "../mp/aca_16s/files/seqtab_C.rds")
-
-
-
-
