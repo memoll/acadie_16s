@@ -1,7 +1,9 @@
-# Script to analyze 16S data with DADA2 
-# Based on DADA2 tutorial by Benjamin Callahan
-# Data: Miseq-16S-demultiplexed 
-# Mona Parizadeh - 2018-2019
+#################################################
+# Script to analyze 16S data with DADA2         #
+# Based on DADA2 tutorial by Benjamin Callahan  #
+# Data: Miseq-16S-demultiplexed                 #
+# Mona Parizadeh - 2018-2019                    #
+#################################################
 
 # I have used the same script for all the three sequencing runs; however, I had to set few parameters differently among the runs. 
 # You can find the parameter settings for the 2nd and the 3rd runs (if they were different from the 1st one) in the comments below the related function.
@@ -79,12 +81,10 @@ dadaRs <- dada(derepRs, err=errR, pool="pseudo", multithread=TRUE)
 #pool = TRUE, the algorithm will pool together all samples prior to sample inference.
 #Pooling can increase sensitivity to rare per-sample variants, but it takes time.
 #Key parameters: OMEGA_A = 1e-40, OMEGA_C = 1e-40, BAND_SIZE = 16
-
 dadaFs[[1]] 
 dadaRs[[1]] 
 dadaFs[[3]] 
 dadaRs[[3]] 
-
 
 # Merge the denoised forward and reverse reads ####
 #This merges error-free forward and reverse reads (after being denoised) and removes paired reads that did not exactly overlapped
@@ -98,9 +98,7 @@ mergers <- mergePairs(dadaFs, derepFs, dadaRs, derepRs, minOverlap = 10, maxMism
 #returnRejects = TRUE : the pairs that were rejected based on mismatches in the overlap region are retained in the return data.frame.
 #if the primers overhang (hang or extend outward over), use overhang = TRUE; see ITS workflow.
 #trimOverhang = TRUE; in case any of our reads go passed their opposite primers (not necessary)
-
 head(mergers[[1]])
-
 
 # Construct sequence table ####
 seqtab <- makeSequenceTable(mergers) 
@@ -114,6 +112,6 @@ table(nchar(getSequences(seqtab)))
 #top: size (nt), below: frequency
 
 #In order to merge this dataset with the other sequencing runs, we need to save the seqtab at this moment:
-#saveRDS(seqtab, file = "../mp/aca_16s/dada2/seqtab.rds")
+saveRDS(seqtab, file = "../mp/aca_16s/dada2/seqtab.rds")
 
 
