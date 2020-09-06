@@ -42,7 +42,7 @@ tax_mat(ps)[1:5,]
 
 #Explore controls ####
 #see if some of them have a lot of sequences and why!
-#Positive controls ####
+#%Positive controls ####
 ct.posID = sample_names(ps)[grep("CTL..00",sample_names(ps))] 
 ps.pos.ctl = subset_samples(ps, sample_data(ps)$sampleid %in% ct.posID)
 ps.pos.ctl = prune_taxa(taxa_sums(ps.pos.ctl)>0, ps.pos.ctl)
@@ -67,7 +67,7 @@ mdt.pos.ctl$sampleid[mdt.pos.ctl$Genus == "Escherichia/Shigella"] #in all 11 sam
 mdt.pos.ctl$sampleid[mdt.pos.ctl$Genus == "Pantoea"] #in all 11 samples
 mdt.pos.ctl$sampleid[mdt.pos.ctl$Genus == "Xanthomonas"] #in all 11 sample
 
-#Negative controls ####
+#%Negative controls ####
 ps.neg_ctl = subset_samples(ps, sample_data(ps)$sample_or_control == "control")
 ps.neg_ctl = prune_taxa(taxa_sums(ps.neg_ctl)>0, ps.neg_ctl)
 #plot
@@ -151,7 +151,7 @@ sample_names(ps.lost_1kreads)[grep("CTL..0.",sample_names(ps.lost_1kreads))] #lo
 sample_names(ps.aca.neg_ctl.1krds)[grep("CTL..0.",sample_names(ps.aca.neg_ctl.1krds))] #left
 
 #4. Remove contaminants ####
-library(decontam)
+library(decontam); packageVersion("decontam") #‘1.1.2’
 # 4.1. Inspect library sizes ####
 # Assign the full sample_data
 sample_df = function(ps) as(sample_data(ps), "data.frame")
@@ -160,8 +160,6 @@ sam.df$LibrarySize = sample_sums(ps.aca.neg_ctl.1krds)
 sample_data(ps.aca.neg_ctl.1krds) = sample_data(sam.df)
 # The shorthand way, assign one column
 sample_data(ps.aca.neg_ctl.1krds)$LibrarySize = sample_sums(ps.aca.neg_ctl.1krds)
-kable(head(sample_df(ps.aca.neg_ctl.1krds))) %>%
-  kable_styling(bootstrap_options = "striped", full_width = F)
 df = sam.df[order(sam.df$LibrarySize),]
 df$Index = seq(nrow(df))
 ggplot(data=df, aes(x=Index, y=LibrarySize, color=sample_or_control)) + geom_point()
@@ -176,8 +174,6 @@ ggplot(data=df, aes(x=Index, y=LibrarySize, color=sample_or_control)) + geom_poi
 # 4.3. Prevalence - Identify Contaminants ####
 sample_data(ps.aca.neg_ctl.1krds)$is.neg = sample_data(ps.aca.neg_ctl.1krds)$sample_or_control == "control"
 contamdf.prev = isContaminant(ps.aca.neg_ctl.1krds, method="prevalence", neg="is.neg")
-kable(head(contamdf.prev)) %>%
-  kable_styling(bootstrap_options = "striped", full_width = F)
 # the default threshold for a contaminant is that it reaches a probability of 0.1
 table(contamdf.prev$contaminant) #ASVs being recognized as contaminant (TRUE) or not (FALSE)
 which(contamdf.prev$contaminant) 
@@ -185,13 +181,9 @@ which(contamdf.prev$contaminant)
 contam_asvs = row.names(contamdf.prev[contamdf.prev$contaminant == TRUE, ])
 length(contam_asvs)
 contam_taxa = as.data.frame(tax_mat(ps.aca.neg_ctl.1krds))
-kable(contam_taxa[row.names(contam_taxa) %in% contam_asvs, ]) %>%
-  kable_styling(bootstrap_options = "striped", full_width = F)
 #In the prevalence test there is a special value worth knowing,  threshold=0.5
 #This will identify as contaminants all sequences that are more prevalent in negative controls than in samples.
 contamdf.prev05 = isContaminant(ps.aca.neg_ctl.1krds, method="prevalence", neg="is.neg", threshold=0.5)
-kable(head(contamdf.prev05)) %>%
-  kable_styling(bootstrap_options = "striped", full_width = F)
 table(contamdf.prev05$contaminant)
 which(contamdf.prev05$contaminant)
 # The prevalence can find more number of contaminants than the frequency method
@@ -201,8 +193,6 @@ which(contamdf.prev05$contaminant)
 contam05_asvs = row.names(contamdf.prev05[contamdf.prev05$contaminant == TRUE, ])
 length(contam05_asvs)
 contam05_taxa = as.data.frame(tax_mat(ps.aca.neg_ctl.1krds))
-kable(contam05_taxa[row.names(contam05_taxa) %in% contam05_asvs, ]) %>%
-  kable_styling(bootstrap_options = "striped", full_width = F)
 
 # Visualize abundance of potential contaminant ASVs - prevalence cutoff 0.1
 ps.pa = transform_sample_counts(ps.aca.neg_ctl.1krds, function(abund) 1*(abund>0))
@@ -235,10 +225,8 @@ plot_bar(subset_contam, fill="Genus") + ggtitle("Taxonomic identity and abundanc
 taxo.contam = as.data.frame(as(tax_table(subset_contam),"matrix"))
 taxo.contam$abund = apply(otu_table(subset_contam),2,sum)
 rownames(taxo.contam) = NULL
-#taxo.contam
-kable(taxo.contam[order(taxo.contam$abund, decreasing = TRUE),]) %>%
-  kable_styling(bootstrap_options = "striped", full_width = F)
-
+head(taxo.contam)
+                                
 # taxonomic identity and abundance of the potential contaminant ASVs - prevalence cutoff 0.5
 subset_contam05 = subset_taxa(ps.aca.neg_ctl.1krds, contamdf.prev05$contaminant==TRUE)
 plot_bar(subset_contam05, fill="Genus") + ggtitle("Taxonomic identity and abundance of the potential contaminant ASVs \nat Genus level - prevalence cutoff 0.5")
@@ -246,9 +234,7 @@ plot_bar(subset_contam05, fill="Genus") + ggtitle("Taxonomic identity and abunda
 taxo.contam05 = as.data.frame(as(tax_table(subset_contam05),"matrix"))
 taxo.contam05$abund = apply(otu_table(subset_contam05),2,sum)
 rownames(taxo.contam05) = NULL
-#taxo.contam
-kable(taxo.contam05[order(taxo.contam05$abund, decreasing = TRUE),]) %>%
-  kable_styling(bootstrap_options = "striped", full_width = F)
+head(taxo.contam05)
 
 # 4.3.a. Prevalence 0.1 ####
 ps.notcontam = subset_taxa(ps.aca.neg_ctl.1krds, contamdf.prev$contaminant==FALSE)
@@ -351,9 +337,8 @@ rare_curve_summary = ddply(rare_curve,
                                c('Depth', 'Sample', 'Measure'), summarise, 
                                Alpha_diversity_mean = mean(Alpha_diversity))
 obs = rare_curve_summary[rare_curve_summary$Measure=="Observed",]
-#Fig. 5####
 # Plot
-p.fig5 = ggplot(data = obs,mapping = aes(x = Depth,y = Alpha_diversity_mean,colour=Sample,group=Sample)) + 
+ggplot(data = obs,mapping = aes(x = Depth,y = Alpha_diversity_mean,colour=Sample,group=Sample)) + 
   theme_bw() +
   scale_x_continuous(breaks = seq(0,20000,1000))+ geom_line() + theme_bw() +theme(legend.position = "none") + 
   #labs(title = "Rarefaction curve") +
@@ -362,8 +347,6 @@ p.fig5 = ggplot(data = obs,mapping = aes(x = Depth,y = Alpha_diversity_mean,colo
         axis.text.y = element_text(size = 14),
         axis.title = element_text(size = 18, face = "bold"),
         title = element_text(size = 14, face = "bold")) 
-library(cowplot)
-save_plot("/mp/aca_16s/graphs/ParizadehM_Fig5.pdf",p.fig5, ncol = 2, nrow = 2)
 
 #% 5,000 cutoff #### 
 #we rarefy at the lowest cutoff which is the one from phyllosphere samples 
@@ -401,7 +384,6 @@ sample_data(ps.phyl)$habitat = NULL
 ps.phyl
 saveRDS(ps.phyl, "../mp/aca_16s/files/16S_aca_phyl5000.rds")
 
-
 #% 10,000 cutoff #### 
 #we rarefy at the lowest cutoff which is the one from soil samples 
 ps.rare10 = rarefy_even_depth(ps.aca, sample.size = 10000, rngseed = 8306, trimOTUs = TRUE, replace = TRUE)
@@ -427,5 +409,3 @@ ps.soil = prune_taxa(taxa_sums(ps.soil)>0,ps.soil)
 sample_data(ps.soil)$habitat = NULL
 ps.soil
 saveRDS(ps.soil, "../mp/aca_16s/files/16S_aca_soil10000.rds")
-
-
