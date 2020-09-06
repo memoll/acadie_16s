@@ -6,7 +6,8 @@
 ###### Note 2: The present analyses have been performed on demultiplexed sequence data of only one sampling site (ACA).
 #
 #### Steps of data analysis:
-- DADA2 analysis of different sequening runs individually and merge the final results of multiple runs
+- DADA2 analysis of different sequening runs individually 
+- Merge the final results of multiple runs and assign taxonomy
 - Quality control, denoising and cleaning data
 - Explanatory analysis of the non-treated (control) samples
 - Explanatory analysis of the phyllosphere samples
