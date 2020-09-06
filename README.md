@@ -1,2 +1,6 @@
 # acadie_16s
-Analysis of the phyllosphere and soil bacterial communities (16S amplicon sequencing)
+
+Analysis of the phyllosphere and soil bacterial communities 
+Data type: Miseq 16S amplicon sequencing
+
+
