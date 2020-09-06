@@ -362,7 +362,7 @@ ps.ctl = subset_samples(ps.rare5, sample_data(ps.rare5)$neonic == "N")
 ps.ctl = prune_taxa(taxa_sums(ps.ctl)>0,ps.ctl)
 sample_data(ps.ctl)$neonic = NULL
 ps.ctl
-saveRDS(ps.ctl, "../mp/aca_16s/files/16S_aca_ctl5000.rds")
+saveRDS(ps.ctl, "16S_aca_ctl5000.rds")
 
 #phyllosphere ####
 #subset phyllosphere
@@ -371,13 +371,13 @@ ps.phyl.aca = subset_samples(ps.aca, sample_data(ps.aca)$habitat == "leaf")
 ps.phyl.aca = prune_taxa(taxa_sums(ps.phyl.aca)>0,ps.phyl.aca)
 sample_data(ps.phyl.aca)$habitat = NULL
 ps.phyl.aca
-saveRDS(ps.phyl.aca, "../mp/aca_16s/files/16S_aca_phyl.rds")
+saveRDS(ps.phyl.aca, "16S_aca_phyl.rds")
 #rarefied at 5,000
 ps.phyl = subset_samples(ps.rare5, sample_data(ps.rare5)$habitat == "leaf") 
 ps.phyl = prune_taxa(taxa_sums(ps.phyl)>0,ps.phyl)
 sample_data(ps.phyl)$habitat = NULL
 ps.phyl
-saveRDS(ps.phyl, "../mp/aca_16s/files/16S_aca_phyl5000.rds")
+saveRDS(ps.phyl, "16S_aca_phyl5000.rds")
 
 #% 10,000 cutoff #### 
 #we rarefy at the lowest cutoff which is the one from soil samples 
@@ -397,10 +397,10 @@ ps.soil.aca = subset_samples(ps.aca, sample_data(ps.aca)$habitat == "soil")
 ps.soil.aca = prune_taxa(taxa_sums(ps.soil.aca)>0,ps.soil.aca)
 sample_data(ps.soil.aca)$habitat = NULL
 ps.soil.aca
-saveRDS(ps.soil.aca, "../mp/aca_16s/files/16S_aca_soil.rds")
+saveRDS(ps.soil.aca, "16S_aca_soil.rds")
 #rarefied at 10,000
 ps.soil = subset_samples(ps.rare10, sample_data(ps.rare10)$habitat == "soil") 
 ps.soil = prune_taxa(taxa_sums(ps.soil)>0,ps.soil)
 sample_data(ps.soil)$habitat = NULL
 ps.soil
-saveRDS(ps.soil, "../mp/aca_16s/files/16S_aca_soil10000.rds")
+saveRDS(ps.soil, "16S_aca_soil10000.rds")
