@@ -166,12 +166,7 @@ ggplot(data=df, aes(x=Index, y=LibrarySize, color=sample_or_control)) + geom_poi
 # The library sizes of the samples primarily goes from 25 000 to 100 000 reads, but there are some high-read outliers.
 # As expected, the negative control samples have very fewer reads as expected.
 
-# 4.2. Frequency - Identify Contaminants ####
-# I didn't do this step (need a concentration column for all the samplles in the metadata table)
-#contamdf.freq <- isContaminant(ps.no.pos, method="frequency", conc="quant_reading")
-# "quant_reading" is the sample variable that holds the concentration information
-
-# 4.3. Prevalence - Identify Contaminants ####
+# 4.2. Prevalence - Identify Contaminants ####
 sample_data(ps.aca.neg_ctl.1krds)$is.neg = sample_data(ps.aca.neg_ctl.1krds)$sample_or_control == "control"
 contamdf.prev = isContaminant(ps.aca.neg_ctl.1krds, method="prevalence", neg="is.neg")
 # the default threshold for a contaminant is that it reaches a probability of 0.1
@@ -236,19 +231,19 @@ taxo.contam05$abund = apply(otu_table(subset_contam05),2,sum)
 rownames(taxo.contam05) = NULL
 head(taxo.contam05)
 
-# 4.3.a. Prevalence 0.1 ####
+# 4.2.a. Prevalence 0.1 ####
 ps.notcontam = subset_taxa(ps.aca.neg_ctl.1krds, contamdf.prev$contaminant==FALSE)
 ps.notcontam = prune_samples(sample_sums(ps.notcontam)>0, ps.notcontam)
 ps.notcontam
-# 4.3.b. Agressive Prevalence 0.5 ####
+# 4.2.b. Agressive Prevalence 0.5 ####
 ps.notcontam05 = subset_taxa(ps.aca.neg_ctl.1krds, contamdf.prev05$contaminant==FALSE)
 ps.notcontam05 = prune_samples(sample_sums(ps.notcontam05)>0, ps.notcontam05)
 ps.notcontam05
 #lost ASVs
 ntaxa(ps.aca.neg_ctl.1krds) - ntaxa(ps.notcontam05)
-# 4.3.c. Remove Chloroplast ####
+# 4.2.c. Remove Chloroplast ####
 ps.notcontamChlp = subset_taxa(ps.notcontam05, (Order!="Chloroplast" | is.na(Order)))
-# 4.4.d. Remove Mitochondria ####
+# 4.2.d. Remove Mitochondria ####
 ps.notcontamChlpMitc = subset_taxa(ps.notcontamChlp, (Family!="Mitochondria") | is.na(Family))
 ps.notcontamChlpMitc = prune_samples(sample_sums(ps.notcontamChlpMitc) > 0, ps.notcontamChlpMitc)
 ps.notcontamChlpMitc
@@ -367,7 +362,7 @@ ps.ctl = subset_samples(ps.rare5, sample_data(ps.rare5)$neonic == "N")
 ps.ctl = prune_taxa(taxa_sums(ps.ctl)>0,ps.ctl)
 sample_data(ps.ctl)$neonic = NULL
 ps.ctl
-saveRDS(ps.ctl, "/data/users/mona/miseq_16S/Mona_16S_all/article1/16S_aca_ctl5000.rds")
+saveRDS(ps.ctl, "../mp/aca_16s/files/16S_aca_ctl5000.rds")
 
 #phyllosphere ####
 #subset phyllosphere
