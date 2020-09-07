@@ -20,8 +20,8 @@ sample_variables(ps)
 rank_names(ps)
 subset_samples(ps, sample_data(ps)$habitat == "leaf")
 subset_samples(ps, sample_data(ps)$habitat == "soil")
-subset_samples(ps, sample_data(ps)$neonic == "Y")
-subset_samples(ps, sample_data(ps)$neonic == "N")
+subset_samples(ps, sample_data(ps)$neonic == "Y") #neonic-treated
+subset_samples(ps, sample_data(ps)$neonic == "N") #control (non-treated)
 subset_samples(ps, sample_data(ps)$sample_or_control == "control") #negative controls
 #number of seq per sample
 summary(sample_sums(ps))  #or: summary(apply(comm,1,sum))
@@ -41,7 +41,6 @@ tax_mat = function(ps) as(tax_table(ps), "matrix")
 tax_mat(ps)[1:5,]
 
 #Explore controls ####
-#see if some of them have a lot of sequences and why!
 #%Positive controls ####
 ct.posID = sample_names(ps)[grep("CTL..00",sample_names(ps))] 
 ps.pos.ctl = subset_samples(ps, sample_data(ps)$sampleid %in% ct.posID)
@@ -78,22 +77,9 @@ ps.neg_ctl %>%
   xlab("Negative Control IDs") + ylab("Abundance") +
   theme(axis.text.x = element_text(size = 8, angle = 90, vjust = 0.5, hjust = 1))
 
-#Subset L'Acadie & negative CTRLs ####
+#Keep only L'Acadie & negative CTRLs (or remove positive CTRLs) ####
 #L'Acadie data contains the 3rd phyllosphere replicates (r3), which need to be removed
-ps.aca_r3.ctl = subset_samples(ps, sample_data(ps)$site == "ACA" | sample_data(ps)$sampleid %in% sample_data(ps.neg_ctl)$sampleid)
-ps.aca_r3.ctl = prune_taxa(taxa_sums(ps.aca_r3.ctl)>0, ps.aca_r3.ctl)
-ps.aca_r3.ctl
-
-#Remove the other samples that will not be analyzed in this study 
-#define 3rd phyllosphere replicate (these samples are not being used for this analysis)
-r3 = sample_names(ps.aca_r3.ctl)[grep(".LA...3",sample_names(ps.aca_r3.ctl))]
-#1.remove 3rd phyllosphere replicate
-ps.aca.nor3_ctl = subset_samples(ps.aca_r3.ctl, !sample_data(ps.aca_r3.ctl)$sampleid %in% r3)
-ps.aca.nor3_ctl = prune_taxa(taxa_sums(ps.aca.nor3_ctl)>0, ps.aca.nor3_ctl)
-ps.aca.nor3_ctl
-#2.remove May from soil samples
-#since they have been collected at the beginning of the season and so the treated samples are technically the same as ctls (and they are counted as noises in the dataset)
-ps.aca.neg_ctl = subset_samples(ps.aca.nor3_ctl, sample_data(ps.aca.nor3_ctl)$month != "May")
+ps.aca.neg_ctl = subset_samples(ps, sample_data(ps)$site == "ACA" | sample_data(ps)$sampleid %in% sample_data(ps.neg_ctl)$sampleid)
 ps.aca.neg_ctl = prune_taxa(taxa_sums(ps.aca.neg_ctl)>0, ps.aca.neg_ctl)
 ps.aca.neg_ctl
 
