@@ -33,7 +33,7 @@ head(taxaSilva.spe.print)
 
 # Import the metadata file ####
 #It contains informations about samples and treatments
-map = import_qiime_sample_data("../mp/aca_16s/files/metadata.csv")
+map = import_qiime_sample_data("../mp/aca_16s/files/aca_metadata.csv")
 
 # Make phyloseq object ####
 ps = phyloseq(otu_table(seqtab, taxa_are_rows = FALSE), sample_data(map), tax_table(taxaSilva.spe))
