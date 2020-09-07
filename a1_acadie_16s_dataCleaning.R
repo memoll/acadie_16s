@@ -313,14 +313,10 @@ plot_ordination(ps.aca.ra, nmds1.aca, color = "habitat", shape = "host") +
   theme_bw() + geom_point() + ggtitle("nMDS") +
   geom_text(aes(label = sampleid), check_overlap = FALSE, size = 5)  #nudge_x to seperate id from point
 
-#remove the unnecessary variables (we don't need them for this article)
+#clean the metadata table (remove the unnecessary variables) 
 sample_variables(ps.aca)
 sample_data(ps.aca)$site = NULL
-sample_data(ps.aca)$stage = NULL
-sample_data(ps.aca)$treatment = NULL
 sample_data(ps.aca)$sample_or_control = NULL
-sample_data(ps.aca)$LibrarySize = NULL
-sample_data(ps.aca)$is.neg = NULL
 ps.aca
 
 #Rarefaction ####
