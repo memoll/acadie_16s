@@ -1,5 +1,5 @@
 #######################################################################################
-# Explanatory analysis of the phyllosphere and samples                                #
+# Explanatory analysis of the phyllosphere samples                                    #
 # Studying the effects of neonicotinoids on the phyllosphere bacterial communities    #
 # Data: Miseq-16S - L'Acadie (ACA)                                                    #
 # Mona Parizadeh - 2019-2020                                                          #
