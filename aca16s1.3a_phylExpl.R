@@ -296,7 +296,7 @@ sd(shn.rich.neo$Shannon, na.rm=TRUE) /
   sqrt(length(shn.rich.neo$Shannon[!is.na(shn.rich.neo$Shannon)])) #SE
 
 #Shannon richness - Hosts in interaction w/ treatment ####
-#subset soybean
+#soybean
 shn.rich.sy = cbind(estimate_richness(ps.sy,measures = 'shannon'),
                  sample_data(ps.sy))
 compare_means(Shannon ~ neonic, shn.rich.sy, method = "wilcox.test", paired = FALSE, p.adjust.method = "holm") 
@@ -317,7 +317,7 @@ summary(shn.rich.sy.neo)
 sd(shn.rich.sy.neo$Shannon, na.rm=TRUE) /  
   sqrt(length(shn.rich.sy.neo$Shannon[!is.na(shn.rich.sy.neo$Shannon)])) #SE
 
-#subset corn
+#corn
 shn.rich.cr = cbind(estimate_richness(ps.cr,measures = 'shannon'),
                     sample_data(ps.cr))
 compare_means(Shannon ~ neonic, shn.rich.cr, method = "wilcox.test", paired = FALSE, p.adjust.method = "holm") 
