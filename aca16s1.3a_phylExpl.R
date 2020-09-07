@@ -277,11 +277,6 @@ compare_means(Shannon ~ neonic, shn.rich, method = "wilcox.test", paired = FALSE
 compare_means(Shannon ~ neonic, shn.rich, method = "wilcox.test", paired = FALSE, p.adjust.method = "holm",
               group.by = "year") 
 
-#Linear model ####
-shn.lm = lm(Shannon ~ neonic * month, data=shn.rich)
-summary(shn.lm)
-anova(shn.lm)
-
 #Shannon richness - treatment ####
 #control
 ps.ctl = subset_samples(ps, sample_data(ps)$neonic == "N")
@@ -380,3 +375,8 @@ shn.s.y = shn.rich %>%
 summary(shn.s.y)
 sd(shn.s.y$Shannon, na.rm=TRUE) /  
   sqrt(length(shn.s.y$Shannon[!is.na(shn.s.y$Shannon)])) #SE
+
+#Linear model ####
+shn.lm = lm(Shannon ~ neonic * month, data=shn.rich)
+summary(shn.lm)
+anova(shn.lm)
