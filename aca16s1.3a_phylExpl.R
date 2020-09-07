@@ -272,10 +272,6 @@ sd(shn.rich$Shannon, na.rm=TRUE) /
 # Wilcoxon rank-sum test (Mann-Whitney)
 library(ggpubr); packageVersion("ggpubr") #‘0.3.0’
 compare_means(Shannon ~ neonic, shn.rich, method = "wilcox.test", paired = FALSE, p.adjust.method = "holm") 
-compare_means(Shannon ~ neonic, shn.rich, method = "wilcox.test", paired = FALSE, p.adjust.method = "holm",
-              group.by = "month") 
-compare_means(Shannon ~ neonic, shn.rich, method = "wilcox.test", paired = FALSE, p.adjust.method = "holm",
-              group.by = "year") 
 
 #Shannon richness - treatment ####
 #control
@@ -295,7 +291,7 @@ summary(shn.rich.neo)
 sd(shn.rich.neo$Shannon, na.rm=TRUE) /  
   sqrt(length(shn.rich.neo$Shannon[!is.na(shn.rich.neo$Shannon)])) #SE
 
-#Shannon richness - Hosts in interaction w/ treatment ####
+#Shannon richness - osts indivually in interaction w/ treatment ####
 #soybean
 shn.rich.sy = cbind(estimate_richness(ps.sy,measures = 'shannon'),
                  sample_data(ps.sy))
@@ -339,6 +335,8 @@ sd(shn.rich.cr.neo$Shannon, na.rm=TRUE) /
   sqrt(length(shn.rich.cr.neo$Shannon[!is.na(shn.rich.cr.neo$Shannon)])) #SE
 
 #Shannon richness - months in interaction w/ treatment ####
+compare_means(Shannon ~ neonic, shn.rich, method = "wilcox.test", paired = FALSE, p.adjust.method = "holm",
+              group.by = "month")  
 #July - control
 shn.j.n = shn.rich %>% 
   filter(month == "July" & neonic == "N") 
