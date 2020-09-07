@@ -291,7 +291,7 @@ shn.rich.ctl = cbind(estimate_richness(ps.ctl,measures = 'shannon'),
 summary(shn.rich.ctl)
 sd(shn.rich.ctl$Shannon, na.rm=TRUE) /  
   sqrt(length(shn.rich.ctl$Shannon[!is.na(shn.rich.ctl$Shannon)])) #SE
-#neonic
+#neonic-treated
 ps.neo = subset_samples(ps, sample_data(ps)$neonic == "Y")
 ps.neo = prune_taxa(taxa_sums(ps.neo)>0, ps.neo)
 shn.rich.neo = cbind(estimate_richness(ps.neo,measures = 'shannon'),
