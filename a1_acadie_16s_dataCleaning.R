@@ -60,12 +60,12 @@ mdt.pos.ctl = ps.pos.ctl %>%
   tax_glom(taxrank = "Genus") %>%
   transform_sample_counts(function(x) {x/sum(x)} ) %>%
   psmelt() 
-#check if the initial bacteria in the positive controls are present after sequencing
-mdt.pos.ctl$sampleid[mdt.pos.ctl$Genus == "Clavibacter"] #in all 11 samples
-mdt.pos.ctl$sampleid[mdt.pos.ctl$Genus == "Pectobacterium"] #in all 11 samples
-mdt.pos.ctl$sampleid[mdt.pos.ctl$Genus == "Escherichia/Shigella"] #in all 11 samples
-mdt.pos.ctl$sampleid[mdt.pos.ctl$Genus == "Pantoea"] #in all 11 samples
-mdt.pos.ctl$sampleid[mdt.pos.ctl$Genus == "Xanthomonas"] #in all 11 sample
+#check if the bacteria in the positive controls have been sequenced and identiifed 
+mdt.pos.ctl$sampleid[mdt.pos.ctl$Genus == "Clavibacter"] 
+mdt.pos.ctl$sampleid[mdt.pos.ctl$Genus == "Pectobacterium"] 
+mdt.pos.ctl$sampleid[mdt.pos.ctl$Genus == "Escherichia/Shigella"] 
+mdt.pos.ctl$sampleid[mdt.pos.ctl$Genus == "Pantoea"]
+mdt.pos.ctl$sampleid[mdt.pos.ctl$Genus == "Xanthomonas"] 
 
 #%Negative controls ####
 ps.neg_ctl = subset_samples(ps, sample_data(ps)$sample_or_control == "control")
@@ -83,15 +83,16 @@ ps.neg_ctl %>%
 ps.aca_r3.ctl = subset_samples(ps, sample_data(ps)$site == "ACA" | sample_data(ps)$sampleid %in% sample_data(ps.neg_ctl)$sampleid)
 ps.aca_r3.ctl = prune_taxa(taxa_sums(ps.aca_r3.ctl)>0, ps.aca_r3.ctl)
 ps.aca_r3.ctl
+
+#Remove the other samples that will not be analyzed in this study 
 #define 3rd phyllosphere replicate (these samples are not being used for this analysis)
 r3 = sample_names(ps.aca_r3.ctl)[grep(".LA...3",sample_names(ps.aca_r3.ctl))]
-#remove 3rd phyllosphere replicate
+#1.remove 3rd phyllosphere replicate
 ps.aca.nor3_ctl = subset_samples(ps.aca_r3.ctl, !sample_data(ps.aca_r3.ctl)$sampleid %in% r3)
 ps.aca.nor3_ctl = prune_taxa(taxa_sums(ps.aca.nor3_ctl)>0, ps.aca.nor3_ctl)
 ps.aca.nor3_ctl
-#Remove May from soil samples
-#since they have been collected at the beginning of the season and 
-#so the treated samples are technically the same as ctls (and they are counted as noises in the dataset)
+#2.remove May from soil samples
+#since they have been collected at the beginning of the season and so the treated samples are technically the same as ctls (and they are counted as noises in the dataset)
 ps.aca.neg_ctl = subset_samples(ps.aca.nor3_ctl, sample_data(ps.aca.nor3_ctl)$month != "May")
 ps.aca.neg_ctl = prune_taxa(taxa_sums(ps.aca.neg_ctl)>0, ps.aca.neg_ctl)
 ps.aca.neg_ctl
@@ -110,14 +111,14 @@ Chloroplast = subset_taxa(ps.aca.neg_ctl, Order=="Chloroplast")  ####keep it for
 Mitochondria = subset_taxa(ps.aca.neg_ctl, Family=="Mitochondria")
 (ntaxa(Mitochondria)/ntaxa(ps.aca.neg_ctl))*100
 # Note: we still keep chloroplast and mitochondria for decontam purposes 
-((ntaxa(Chloroplast)+ntaxa(Mitochondria))/ntaxa(ps.aca.neg_ctl))*100 #0.14%
+((ntaxa(Chloroplast)+ntaxa(Mitochondria))/ntaxa(ps.aca.neg_ctl))*100 
 
 #Denoising & Decontaminating data ####
 #1. Remove undefined phyla ####
 ps.aca.neg_ctl.noNa = subset_taxa(ps.aca.neg_ctl, !is.na(Phylum) & !Phylum %in% c("", "uncharacterized"))
 ps.aca.neg_ctl.noNa = prune_samples(sample_sums(ps.aca.neg_ctl.noNa)>0, ps.aca.neg_ctl.noNa)
 ps.aca.neg_ctl.noNa
-100-(ntaxa(ps.aca.neg_ctl.noNa)/ntaxa(ps.aca.neg_ctl))*100 #0.78% 
+100-(ntaxa(ps.aca.neg_ctl.noNa)/ntaxa(ps.aca.neg_ctl))*100 
 
 #2. Remove outliers - NMDS####
 #relative abundance
@@ -126,7 +127,7 @@ ps.ra = transform_sample_counts(ps.aca.neg_ctl.noNa, function(otu) otu/sum(otu))
 nmds = ordinate(ps.aca.neg_ctl.noNa, method = "NMDS", k = 2, try = 100, distance = "bray")
 plot_ordination(ps.ra, nmds, color = "habitat", shape = "sample_or_control") + 
   theme_bw() + geom_point() + ggtitle("nMDS") +
-  geom_text(aes(label = sampleid), check_overlap = FALSE, size = 5) + #nudge_x to seperate id from point: , nudge_y = -500
+  geom_text(aes(label = sampleid), check_overlap = FALSE, size = 5) + 
   geom_point(size = 1) + scale_shape_manual(values = c(19, 1))
 #Remove outliers 1
 out = c("CTL0004","CTL3001")
@@ -137,7 +138,7 @@ nmds1 = ordinate(ps1.ra, method = "NMDS", k = 2, try = 100, distance = "bray")
 plot_ordination(ps1.ra, nmds1, color = "habitat", shape = "sample_or_control") + 
   theme_bw() +
   geom_point() + ggtitle("nMDS") +
-  geom_text(aes(label = sampleid), check_overlap = FALSE, size = 3, nudge_y = -0.1) + #nudge_x to seperate id from point
+  geom_text(aes(label = sampleid), check_overlap = FALSE, size = 3, nudge_y = -0.1) + 
   geom_point(size = 5) + scale_shape_manual(values = c(19, 1))
 
 #3. Keep samples with at least 1000 reads ####
@@ -164,7 +165,7 @@ df = sam.df[order(sam.df$LibrarySize),]
 df$Index = seq(nrow(df))
 ggplot(data=df, aes(x=Index, y=LibrarySize, color=sample_or_control)) + geom_point()
 # The library sizes of the samples primarily goes from 25 000 to 100 000 reads, but there are some high-read outliers.
-# As expected, the negative control samples have very fewer reads as expected.
+# As expected, the negative control samples have very fewer reads.
 
 # 4.2. Prevalence - Identify Contaminants ####
 sample_data(ps.aca.neg_ctl.1krds)$is.neg = sample_data(ps.aca.neg_ctl.1krds)$sample_or_control == "control"
@@ -205,7 +206,7 @@ ggplot(data=df.pa, aes(x=pa.ctl, y=pa.smp, color=contaminant)) + geom_point() +
 
 # Visualize abundance of potential contaminant ASVs - prevalence cutoff 0.5
 #threshold (cutoff): The probability threshold below which the null-hypothesis (not a contaminant) should be rejected in favor of the alternate hypothesis (contaminant)
-# Make data.frame of prevalence in positive and negative samples
+#Make data.frame of prevalence in positive and negative samples
 df.pa05 = data.frame(pa.smp=taxa_sums(ps.pa_smp), pa.ctl=taxa_sums(ps.pa_ctl),
                      contaminant=contamdf.prev05$contaminant)
 ggplot(data=df.pa05, aes(x=pa.ctl, y=pa.smp, color=contaminant)) + geom_point() +
@@ -254,7 +255,6 @@ ps.negctl.rem = prune_taxa(taxa_sums(ps.negctl.rem)>0, ps.negctl.rem)
 ps.negctl.rem
 ps.negctl.rem %>% 
   tax_glom(taxrank = "Genus", NArm=TRUE) %>% #keep NAs
-  # transform_sample_counts(function(x) {x/sum(x)} ) %>% # Transform to relative abundance
   plot_bar(fill="Genus") +
   labs(title = "Bacteria genera present in the remaining negative control \nAfter decontamination") +
   xlab("Negative Control") + ylab("Abundance") +
@@ -295,12 +295,12 @@ ps.aca.ra = transform_sample_counts(ps.aca.ctl_seq10, function(otu) otu/sum(otu)
 nmds.aca = ordinate(ps.aca.ctl_seq10, method = "NMDS", k = 2, try = 100, distance = "bray")
 plot_ordination(ps.aca.ra, nmds.aca, color = "habitat", shape = "host") + 
   theme_bw() + geom_point() + ggtitle("nMDS") +
-  geom_text(aes(label = sampleid), check_overlap = TRUE, size = 5)  #nudge_x to seperate id from point
-#outliers: "CTL0001","SDA7831", "SDA7852", "SDA8841"
+  geom_text(aes(label = sampleid), check_overlap = TRUE, size = 5)  
+
 #shannon richness
 plot_richness(ps.aca.ctl_seq10,"habitat","host", measures = "Shannon") +
   geom_text(aes(label = sampleid), check_overlap = FALSE, size = 3)
-#outlier: "SLA7632"
+
 #remove outlier
 out1 = c("CTL0001", "SLA7632", "SDA7831", "SDA7852", "SDA8841")
 ps.aca = prune_samples(!sample_data(ps.aca.ctl_seq10)$sampleid %in% out1, ps.aca.ctl_seq10)
@@ -311,7 +311,7 @@ ps.aca.ra = transform_sample_counts(ps.aca, function(otu) otu/sum(otu))
 nmds1.aca = ordinate(ps.aca, method = "NMDS", k = 2, try = 100, distance = "bray")
 plot_ordination(ps.aca.ra, nmds1.aca, color = "habitat", shape = "host") + 
   theme_bw() + geom_point() + ggtitle("nMDS") +
-  geom_text(aes(label = sampleid), check_overlap = FALSE, size = 5)  #nudge_x to seperate id from point
+  geom_text(aes(label = sampleid), check_overlap = FALSE, size = 5) 
 
 #clean the metadata table (remove the unnecessary variables) 
 sample_variables(ps.aca)
