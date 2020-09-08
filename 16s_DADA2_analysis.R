@@ -112,7 +112,7 @@ table(nchar(getSequences(seqtab)))
 #top: size (nt), below: frequency
 
 #In order to merge this dataset with the other sequencing runs, for each run we need to save the seqtab at this moment:
-# Run 1:
+# Run A:
 saveRDS(seqtab, file = "../mp/aca_16s/files/seqtab_A.rds")
-# Run 2: saveRDS(seqtab, file = "../mp/aca_16s/files/seqtab_B.rds")
-# Run 3: saveRDS(seqtab, file = "../mp/aca_16s/files/seqtab_C.rds")
+# Run B: saveRDS(seqtab, file = "../mp/aca_16s/files/seqtab_B.rds")
+# Run C: saveRDS(seqtab, file = "../mp/aca_16s/files/seqtab_C.rds")
