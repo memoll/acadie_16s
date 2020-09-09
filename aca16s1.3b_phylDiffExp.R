@@ -31,7 +31,7 @@ plotDispEsts(dsp)
 #DESeq ####
 dds = DESeq(phTOds, test = "Wald", fitType="local")
 
-# investigate test results table ####
+#Investigate test results table ####
 resultsNames(dds)
 res = results(dds) #extracts a table from a DESeq analysis
 #contains base means across samples, log2 fold changes, standard errors, test statistics, p-values and adjusted p-values
@@ -86,7 +86,7 @@ sigtab_neo = sigtab[which(sigtab$log2FoldChange>0),];dim(sigtab_neo)
 sort(table(sigtab_neo$Genus), decreasing = TRUE)
 sort(table(sigtab_neo$Phylum), decreasing = TRUE)
 
-#subset ASVs associated w/ control (<0)
+             #subset ASVs associated w/ control (<0)
 sigtab_ctl = sigtab[which(sigtab$log2FoldChange<0),];dim(sigtab_ctl)
 #order based on total number of ASVs
 sort(table(sigtab_ctl$Genus), decreasing = TRUE)
