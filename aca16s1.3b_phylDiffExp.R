@@ -17,25 +17,6 @@ setwd("../mp/aca_16s/files/")
 ps = readRDS("16S_aca_phyl.rds")
 ps
 
-#Subset hosts ####
-#soybean
-ps.sy = subset_samples(ps, sample_data(ps)$host == "soy")
-ps.sy = prune_taxa(taxa_sums(ps.sy)>0, ps.sy)
-ps.sy 
-#corn
-ps.cr = subset_samples(ps, sample_data(ps)$host == "corn")
-ps.cr = prune_taxa(taxa_sums(ps.cr)>0, ps.cr)
-ps.cr
-#Subset treatments ####
-#control
-ps.ctl = subset_samples(ps, sample_data(ps)$neonic == "N") 
-ps.ctl = prune_taxa(taxa_sums(ps.ctl)>0, ps.ctl)
-ps.ctl 
-#neonic-treated
-ps.neo = subset_samples(ps, sample_data(ps)$neonic == "Y")
-ps.neo = prune_taxa(taxa_sums(ps.neo)>0, ps.neo)
-ps.neo
-
 #Phyloseq to deseq2 conversion ####
 phTOds = phyloseq_to_deseq2(ps, design = ~ neonic) 
 is(phTOds); isS4(phTOds)
@@ -49,7 +30,6 @@ plotDispEsts(dsp)
 
 #DESeq ####
 dds = DESeq(phTOds, test = "Wald", fitType="local")
-
 
 # investigate test results table ####
 resultsNames(dds)
