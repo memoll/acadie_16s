@@ -120,8 +120,6 @@ comm.fam = taxocomm(comm, taxo, "Family")
 comm.fam.ra = decostand(comm.fam, method="total") #relative abundance
 fam01 = sort(apply(comm.fam.ra[,apply(comm.fam.ra,2,mean)>0.01], 2, mean),TRUE)
 fam01.ra = comm.fam.ra[,which(colnames(comm.fam.ra) %in% names(fam01))]
-#replace Solibacteraceae_(Subgroup_3) (column name) w/ Solibacteraceae
-colnames(fam01.ra)[colnames(fam01.ra) == "Solibacteraceae_(Subgroup_3)"] = "Solibacteraceae"
 #fit vectors on pcoa
 env.fam = envfit(pcoa$vectors, fam01.ra)
 env.fam
