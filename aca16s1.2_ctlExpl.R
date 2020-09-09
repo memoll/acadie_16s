@@ -108,8 +108,7 @@ pcoa1 +
         axis.title = element_text(size = 12, face = "bold"), #main axis label
         legend.title = element_text(size=12, face="bold"),legend.text=element_text(size=12),
         legend.position = "right") +
-  guides(fill = guide_legend(override.aes=list(shape=15))) +
-  labs(tag = "A)") + theme(plot.tag = element_text(size = 12, face = "bold"))
+  guides(fill = guide_legend(override.aes=list(shape=15))) 
 
 # Fitness ####
 comm = otu_table(ps)
@@ -158,8 +157,7 @@ p.env.fam +
         axis.title = element_text(size = 10, face = "bold"), #main axis label
         legend.title = element_text(size=12, face="bold"),legend.text=element_text(size=12),
         legend.position = "none") +
-  guides(fill = guide_legend(override.aes=list(shape=15))) +
-  labs(tag = "B)") + theme(plot.tag = element_text(size = 12, face = "bold"))
+  guides(fill = guide_legend(override.aes=list(shape=15))) 
 
 #Phyllosphere #### 
 ps.phyl = subset_samples(ps, sample_data(ps)$habitat == "leaf") 
