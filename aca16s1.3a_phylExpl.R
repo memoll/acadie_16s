@@ -110,8 +110,8 @@ pcoa1.phyl +
         axis.title = element_text( size = 12, face = "bold"),
         axis.text.x = element_text(size = 10),
         axis.text.y = element_text(size = 10)) +
-  guides(col = guide_legend(nrow = 6, title.position = "top")) +
-  labs(tag = "A)") + theme(plot.tag = element_text(size = 12, face = "bold")) 
+  guides(col = guide_legend(nrow = 6, title.position = "top")) 
+
 #plot - months seperated
 pcoa1 + 
   theme_bw() +
@@ -139,8 +139,7 @@ pcoa1 +
         axis.text.x = element_text(size = 14),
         axis.text.y = element_text(size = 14),
         axis.title = element_text( size = 14, face = "bold")) +
-  guides(col = guide_legend(nrow = 6, title.position = "top")) +
-  labs(tag = "B)") + theme(plot.tag = element_text(size = 16, face = "bold")) 
+  guides(col = guide_legend(nrow = 6, title.position = "top")) 
 
 #HOSTS ####
 
@@ -202,8 +201,7 @@ p.sy +
         #legend.text=element_text(size=14),
         axis.text = element_text(size = 10),
         axis.title = element_text(size = 12, face = "bold"),
-        legend.justification = "left") +
-  labs(tag = "A)") + theme(plot.tag = element_text(size = 12, face = "bold"))
+        legend.justification = "left") 
 
 #% Corn ####
 #PERMANOVA ####
@@ -260,8 +258,7 @@ p.cr +
         axis.text = element_text(size = 10),
         axis.title = element_text( size = 12, face = "bold"),
         #legend.justification = "left"
-        legend.box = "horizontal") +
-  labs(tag = "B)") + theme(plot.tag = element_text(size = 12, face = "bold"))
+        legend.box = "horizontal") 
 
 #Richness ####
 shn.rich = cbind(estimate_richness(ps,measures = 'shannon'),
