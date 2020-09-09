@@ -10,7 +10,7 @@ library(phyloseq); packageVersion("phyloseq") #‘1.27.6’
 library(vegan); packageVersion("vegan") #‘2.5.6’
 library(ggplot2); packageVersion("ggplot2") #‘3.3.0’
 
-# Import data #### 
+# Import data (rarefied) #### 
 setwd("../mp/aca_16s/files/")
 ps = readRDS("16S_aca_phyl5000.rds")
 ps
