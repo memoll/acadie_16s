@@ -331,6 +331,11 @@ summary(shn.rich.cr.neo)
 sd(shn.rich.cr.neo$Shannon, na.rm=TRUE) /  
   sqrt(length(shn.rich.cr.neo$Shannon[!is.na(shn.rich.cr.neo$Shannon)])) #SE
 
+#Linear model ####
+shn.lm = lm(Shannon ~ neonic * month, data=shn.rich)
+summary(shn.lm)
+anova(shn.lm)
+
 #Shannon richness - months in interaction w/ treatment ####
 compare_means(Shannon ~ neonic, shn.rich, method = "wilcox.test", paired = FALSE, p.adjust.method = "holm",
               group.by = "month")  
@@ -370,8 +375,3 @@ shn.s.y = shn.rich %>%
 summary(shn.s.y)
 sd(shn.s.y$Shannon, na.rm=TRUE) /  
   sqrt(length(shn.s.y$Shannon[!is.na(shn.s.y$Shannon)])) #SE
-
-#Linear model ####
-shn.lm = lm(Shannon ~ neonic * month, data=shn.rich)
-summary(shn.lm)
-anova(shn.lm)
