@@ -271,8 +271,3 @@ shn.18.y = shn.rich %>%
 summary(shn.18.y)
 sd(shn.18.y$Shannon, na.rm=TRUE) /  
   sqrt(length(shn.18.y$Shannon[!is.na(shn.18.y$Shannon)])) #SE
-
-#Linear model ####
-shn.lm = lm(Shannon ~ neonic * month * year, data=shn.rich)
-summary(shn.lm)
-anova(shn.lm)
