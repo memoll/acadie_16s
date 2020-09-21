@@ -168,8 +168,6 @@ contam_taxa = as.data.frame(tax_mat(ps.aca.neg_ctl.1krds))
 contamdf.prev05 = isContaminant(ps.aca.neg_ctl.1krds, method="prevalence", neg="is.neg", threshold=0.5)
 table(contamdf.prev05$contaminant)
 which(contamdf.prev05$contaminant)
-# The prevalence can find more number of contaminants than the frequency method
-# but it might miss the very frequent contaminants is all the samples (even the negative ones).
 
 # getting vector holding the identified contaminant IDs
 contam05_asvs = row.names(contamdf.prev05[contamdf.prev05$contaminant == TRUE, ])
