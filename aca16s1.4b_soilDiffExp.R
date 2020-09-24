@@ -30,8 +30,7 @@ plotDispEsts(dsp)
 
 #DESeq ####
 dds = DESeq(phTOds, test = "Wald", fitType="local")
-kable(head(colData(dds))) %>%
-  kable_styling(bootstrap_options = "striped", full_width = F)
+head(colData(dds))
 
 #Investigate test results table ####
 resultsNames(dds)
