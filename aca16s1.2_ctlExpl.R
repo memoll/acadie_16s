@@ -113,7 +113,6 @@ pcoa1 +
 # Fitness ####
 comm = otu_table(ps)
 taxo = tax_table(ps)
-meta = sample_data(ps)
 library(seqtools); packageVersion("seqtools") #‘0.1.0’
 #family
 comm.fam = taxocomm(comm, taxo, "Family")
