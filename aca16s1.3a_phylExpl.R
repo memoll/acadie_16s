@@ -83,7 +83,7 @@ pcoa1$layers = pcoa1$layers[-1] #remove the original points to add the desired c
 #% ellipses
 group.hst.neo = paste(hst, neo, sep = "")
 #plot
-pcoa1.phyl + 
+pcoa1 + 
   theme_bw() +
   #group by neonic
   stat_ellipse(aes(fill = group.hst.neo, group=group.hst.neo), geom = "polygon", 
