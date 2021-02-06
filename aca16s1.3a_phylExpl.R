@@ -52,6 +52,7 @@ group.hst.neo.yr = paste(hst, neo, yr, sep = "")
 #order as factor
 group.hst.neo.yr.fac = factor(group.hst.neo.yr,levels=c("soyN2016","soyY2016","cornN2017",
                                                         "cornY2017","soyN2018","soyY2018"))
+sample_data(ps)$month = factor(sample_data(ps)$month,levels=c("July","Aug","Sep"))
 #define labels and colors
 hst.neo.labels = c(soyN2016="Control Soybean 2016", soyY2016="Neonicotinoid-treated Soybean 2016",
                    cornN2017="Control Corn 2017", cornY2017="Neonicotinoid-treated Corn 2017",
@@ -60,22 +61,6 @@ hst.neo.colors = c("cornflowerblue","mediumvioletred","cornflowerblue","mediumvi
 
 #ordinate
 pcoa = ordinate(ps, method = "MDS", k = 2, try = 100, distance = "bray")
-#define variables as factors
-hst = get_variable(ps, "host")
-sample_data(ps)$host = factor(hst)
-neo = get_variable(ps, "neonic")
-sample_data(ps)$neonic = factor(neo)
-yr = get_variable(ps, "year")
-sample_data(ps)$year = factor(yr)
-#% variables
-group.hst.neo.yr = paste(hst, neo, yr, sep = "")
-#order as factor
-group.hst.neo.yr.fac = factor(group.hst.neo.yr,levels=c("soyN2016","soyY2016","cornN2017",
-                                                        "cornY2017","soyN2018","soyY2018"))#order as factor
-sample_data(ps)$month = factor(sample_data(ps)$month,levels=c("July","Aug","Sep"))
-#define labels and colors
-hst.neo.colors = c("cornflowerblue","mediumvioletred","cornflowerblue","mediumvioletred","cornflowerblue", "mediumvioletred")
-#ordinate
 pcoa1 = plot_ordination(ps, pcoa) 
 pcoa1$layers
 pcoa1$layers = pcoa1$layers[-1] #remove the original points to add the desired colors and shapes
