@@ -29,7 +29,7 @@ dsp = estimateDispersions(fcs)
 plotDispEsts(dsp)
 
 #DESeq ####
-dds = DESeq(dsp, test = "Wald", fitType="local") #DESeq(phTOds, test = "Wald", fitType="local")
+dds = DESeq(phTOds, test = "Wald", fitType="local")
 head(colData(dds))
 
 #Investigate test results table ####
