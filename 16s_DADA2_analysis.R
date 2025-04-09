@@ -77,9 +77,12 @@ dadaRs <- dada(derepRs, err=errR, pool="pseudo", multithread=TRUE)
 
 #if p-value is low: there are more reads of sequence than can be explained by sequencing errors
 #if p-value is high: read is caused by error
-#pool = pseudo is recommended when the diversity is high in samples; it approximates pooling in linear time and so takes twice time.
-#Pseudo-pooling can increase sensitivity to rare per-sample variants, but it takes time.
-#pool = TRUE, the algorithm will pool together all samples prior to sample inference.
+#pool = TRUE: pools all samples together prior to sample denoising.
+#pool = FALSE: Denoising is performed on each sample separately. 
+#pool = "pseudo": pseudo-pooling includes 2 steps:
+#1.Denoising and processing samples individually to detect prior ASVs (to increase the algorithm's sensitivity to rare variants)
+#2.Re-processing samples individually based on prior ASVs to detect rare variants 
+#It is recommended when the diversity among samples is high, but it doubles the processing time.
 #Key parameters: OMEGA_A = 1e-40, OMEGA_C = 1e-40, BAND_SIZE = 16
 dadaFs[[1]] 
 dadaRs[[1]] 
